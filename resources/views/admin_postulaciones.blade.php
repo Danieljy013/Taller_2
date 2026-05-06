@@ -1,123 +1,243 @@
 @extends('layouts.app')
 
-@section('title', 'Postulaciones')
+@section('title', 'Postulaciones - NexusPlay Admin')
 
 @section('content')
 
 <style>
-.hero {
+/* ── VARIABLES & RESET ── */
+:root {
+    --accent: #c9a96e;
+    --accent-dim: rgba(201,169,110,0.1);
+    --dark-card: #0f0f18;
+    --text-primary: #ffffff;
+    --text-secondary: #a8a8b8;
+    --text-muted: #6b6b80;
+}
+
+/* ── HERO SECCIÓN ── */
+.admin-hero {
     padding: 6rem 4rem 2rem;
-    text-align: center;
+    background: radial-gradient(circle at 50% 0%, rgba(201,169,110,0.05) 0%, transparent 70%);
 }
 
-.hero h2 {
-    font-size: 2.5rem;
-    font-weight: 800;
+.admin-header {
+    max-width: 1200px;
+    margin: 0 auto;
+    border-left: 4px solid var(--accent);
+    padding-left: 1.5rem;
 }
 
-/* CONTENEDOR */
-.container {
+.admin-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    letter-spacing: 4px;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.admin-header p {
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+/* ── CONTENEDOR DE POSTULACIONES ── */
+.postulaciones-container {
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 2rem 4rem 5rem;
     display: grid;
-    gap: 20px;
+    gap: 2rem;
 }
 
-/* CARD */
-.card {
-    background: #12121a;
-    padding: 25px;
-    border-radius: 12px;
+/* ── CARD ESTILO NEXUS ── */
+.postulacion-card {
+    background: var(--dark-card);
     border: 1px solid rgba(255,255,255,0.05);
-    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
 }
 
-.card:hover {
+.postulacion-card:hover {
+    border-color: rgba(201,169,110,0.3);
     transform: translateY(-5px);
 }
 
-/* HEADER */
-.card h3 {
-    color: #c9a96e;
-    margin-bottom: 10px;
+/* Indicador de ID lateral */
+.postulacion-card::after {
+    content: 'DATA_FILE';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    letter-spacing: 2px;
 }
 
-/* GRID INFO */
-.grid {
+.card-top {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    background: rgba(201,169,110,0.02);
+}
+
+.card-top h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+}
+
+/* ── GRID DE INFORMACIÓN ── */
+.info-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 10px;
-    margin-top: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
 }
 
-/* TEXTOS */
-p {
-    font-size: 0.9rem;
-    color: #ccc;
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
 }
 
-strong {
-    color: #888;
+.info-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.90m;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #f4f4f4;
 }
 
-/* BLOQUES LARGOS */
-.block {
-    margin-top: 15px;
-    padding: 10px;
-    background: #0a0a0f;
-    border-radius: 8px;
+.info-value {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #c9a96e;
 }
 
-/* VACÍO */
-.empty {
+/* ── BLOQUES DE TEXTO LARGO ── */
+.text-blocks {
+    padding: 0 1.5rem 1.5rem;
+    display: grid;
+    gap: 1rem;
+}
+
+.block-item {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.03);
+    padding: 1rem;
+}
+
+.block-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.75rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.block-title::before {
+    content: '>>';
+    font-size: 0.6rem;
+}
+
+.block-content {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* ── EMPTY STATE ── */
+.empty-state {
+    grid-column: 1 / -1;
     text-align: center;
-    color: #666;
-    margin-top: 30px;
+    padding: 5rem;
+    border: 2px dashed rgba(201,169,110,0.1);
+}
+
+.empty-state p {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+}
+
+@media (max-width: 768px) {
+    .admin-hero { padding: 5rem 1.5rem 1rem; }
+    .postulaciones-container { padding: 1rem 1.5rem 5rem; }
 }
 </style>
 
-<section class="hero">
-    <h2>Postulaciones recibidas</h2>
+<section class="admin-hero">
+    <div class="admin-header">
+        <p>Panel de Administración</p>
+        <h2>Postulaciones Recibidas</h2>
+    </div>
 </section>
 
-<section class="container">
+<section class="postulaciones-container">
 
-@if($postulaciones->isEmpty())
-    <div class="empty">No hay postulaciones aún</div>
-@else
+    @forelse($postulaciones as $p)
+        <div class="postulacion-card">
+            <div class="card-top">
+                <h3>{{ $p->nombre }} {{ $p->apellidos }}</h3>
+            </div>
 
-@foreach($postulaciones as $p)
-    <div class="card">
-        
-        <h3>{{ $p->nombre }} {{ $p->apellidos }}</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Correo Electrónico</span>
+                    <span class="info-value">{{ $p->email }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Teléfono</span>
+                    <span class="info-value">{{ $p->telefono }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Ubicación</span>
+                    <span class="info-value">{{ $p->ciudad }}, {{ $p->departamento }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Cargo Postulado</span>
+                    <span class="info-value" style="color: var(--accent);">{{ $p->cargo }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Experiencia</span>
+                    <span class="info-value">{{ $p->experiencia }} años</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Edad / Sexo</span>
+                    <span class="info-value">{{ $p->edad }} años / {{ $p->sexo }}</span>
+                </div>
+            </div>
 
-        <div class="grid">
-            <p><strong>Email:</strong> {{ $p->email }}</p>
-            <p><strong>Edad:</strong> {{ $p->edad }}</p>
-            <p><strong>Sexo:</strong> {{ $p->sexo }}</p>
-            <p><strong>Teléfono:</strong> {{ $p->telefono }}</p>
-            <p><strong>Departamento:</strong> {{ $p->departamento }}</p>
-            <p><strong>Ciudad:</strong> {{ $p->ciudad }}</p>
-            <p><strong>Cargo:</strong> {{ $p->cargo }}</p>
-            <p><strong>Empresa:</strong> {{ $p->empresa }}</p>
-            <p><strong>Ciudad empresa:</strong> {{ $p->ciudad_empresa }}</p>
-            <p><strong>Experiencia:</strong> {{ $p->experiencia }}</p>
-            <p><strong>Idiomas:</strong> {{ $p->idiomas }}</p>
+            <div class="text-blocks">
+                <div class="block-item">
+                    <div class="block-title">Logros Profesionales</div>
+                    <div class="block-content">{{ $p->logros }}</div>
+                </div>
+
+                <div class="block-item">
+                    <div class="block-title">Motivación y Objetivos</div>
+                    <div class="block-content">{{ $p->motivacion }}</div>
+                </div>
+            </div>
         </div>
-
-        <div class="block">
-            <strong>Logros:</strong><br>
-            {{ $p->logros }}
+    @empty
+        <div class="empty-state">
+            <p>No se han detectado nuevas postulaciones en la base de datos</p>
         </div>
-
-        <div class="block">
-            <strong>Motivación:</strong><br>
-            {{ $p->motivacion }}
-        </div>
-
-    </div>
-@endforeach
-
-@endif
+    @endforelse
 
 </section>
 
