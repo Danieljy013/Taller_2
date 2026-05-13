@@ -1,10 +1,13 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
     <html lang="es">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>@yield('title', 'NexusPlay')</title>
         <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+        {{-- CSS de DataTables --}}
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
 
         <style>
             * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -279,6 +282,27 @@
                 color: #f08080;
             }
 
+            /* Estilos mínimos para DataTables (integración estética) */
+            .dt-container {
+                color: var(--text-secondary);
+                background: rgba(255,255,255,0.02);
+                padding: 1rem;
+                border: 1px solid rgba(255,255,255,0.05);
+            }
+            .dataTable {
+                color: var(--text-primary) !important;
+            }
+            .dt-search input {
+                background: #1a1a24 !important;
+                border: 1px solid var(--accent-line) !important;
+                color: white !important;
+            }
+            .dt-paging-button.current {
+                background: var(--accent) !important;
+                color: #0a0a0f !important;
+                border: none !important;
+            }
+
             /* ───── MAIN ───── */
             main { margin-top: 70px; }
 
@@ -413,13 +437,6 @@
 
                 {{-- Solo si ESTÁ logueado --}}
                 @auth
-                    {{--
-                        Capitalización de nombre:
-                        Si el campo 'name' tiene un solo nombre → "juan" → "Juan"
-                        Si tiene nombre y apellido → "juan perez" → "Juan Perez"
-                        ucwords() pone en mayúscula la primera letra de cada palabra
-                        y strtolower() asegura que el resto esté en minúsculas.
-                    --}}
                     @php
                         $fullName   = ucwords(strtolower(Auth::user()->name));
                         $nameParts  = explode(' ', $fullName);
@@ -562,6 +579,10 @@
             </div>
         </footer>
 
+        {{-- SCRIPTS NECESARIOS --}}
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+
         <script>
             // ── Navbar scroll ──
             const navbar = document.getElementById('navbar');
@@ -606,5 +627,8 @@
                 }
             }
         </script>
+
+        {{-- Espacio para scripts específicos de cada vista --}}
+        @yield('scripts')
     </body>
     </html>
